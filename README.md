@@ -2,6 +2,10 @@
 
 A program that "transform" a .z64 SM64 Romhack into a sm64ex-coop mod.
 
+## Requirements
+
+You will need to install .NET Desktop Runtime 6.0: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+
 ## Notes
 
 This program is still in development. If you have any issues with it, please send me the detail of the issue to me on Discord.
