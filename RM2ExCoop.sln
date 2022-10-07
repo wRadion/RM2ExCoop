@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM2ExCoop", "RM2ExCoop.csproj", "{179241D0-7372-426C-A6FF-2BBA16D2CB0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM2ExCoopTest", "RM2ExCoopTest\RM2ExCoopTest.csproj", "{395F5FE0-0D68-4A5E-A9A2-68EB5C8F62F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{179241D0-7372-426C-A6FF-2BBA16D2CB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{179241D0-7372-426C-A6FF-2BBA16D2CB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{179241D0-7372-426C-A6FF-2BBA16D2CB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{179241D0-7372-426C-A6FF-2BBA16D2CB0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{395F5FE0-0D68-4A5E-A9A2-68EB5C8F62F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{395F5FE0-0D68-4A5E-A9A2-68EB5C8F62F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{395F5FE0-0D68-4A5E-A9A2-68EB5C8F62F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{395F5FE0-0D68-4A5E-A9A2-68EB5C8F62F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B744F0B-176B-4AFD-AE26-5E9B9509B358}
+	EndGlobalSection
+EndGlobal
