@@ -2,6 +2,8 @@
 
 A program that "transform" a .z64 SM64 Romhack into a sm64ex-coop mod.
 
+![image](https://user-images.githubusercontent.com/7728178/194779281-b7a4b797-6871-4c0b-968f-8eedb9b7061d.png)
+
 ## Requirements
 
 You will need to install .NET Desktop Runtime 6.0: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
@@ -49,7 +51,7 @@ Thanks a lot to [jesusyoshi54](https://github.com/jesusyoshi54) ([scuttlebugrais
 
 Thanks to [EmeraldLockdown](https://github.com/EmeraldLoc) for all the help provided when I first got into Romhack porting.
 
-Thanks to [Sunk](https://www.youtube.com/channel/UCBT9x3fRcOqbDTATXVgptWg) for the creation of his Romhack port tutorial.
+Thanks to [Sunk](https://www.youtube.com/channel/UCBT9x3fRcOqbDTATXVgptWg) and [Isaac](https://github.com/Isaac0-dev) for the creation of the Romhack port tutorial.
 
 Thanks to [Leonitz](https://www.youtube.com/c/Leonitz) for the program icon.
 
