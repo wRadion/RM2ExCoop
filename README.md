@@ -40,8 +40,6 @@ This program work even better if the Romhack doesn't use custom asm code or cust
 
 This program uses [rom-manager-2-c](https://gitlab.com/scuttlebugraiser/rom-manger-2-c/) (well, a new version recoded entirely in C# for this case).
 
-Thanks a lot to [jesusyoshi54](https://github.com/jesusyoshi54) ([scuttlebugraiser](https://gitlab.com/scuttlebugraiser)) who made this possible.
-
 It uses RM2C to export all the content of the .z64 Rom into C files.
 
 It then modifies those files, and create Lua files to make the sm64ex-coop Lua mod.
@@ -53,3 +51,15 @@ If you want to manually port hacks for sm64ex-coop, you would have to follow [th
 If you already know this guide, here is the list of steps that is done automagically by the program:
 
 ![rm2excoop_compare](https://user-images.githubusercontent.com/7728178/194631372-4023440d-264c-48ba-8705-83471d2dfbe5.jpg)
+
+# Credits
+
+Thanks a lot to [jesusyoshi54](https://github.com/jesusyoshi54) ([scuttlebugraiser](https://gitlab.com/scuttlebugraiser)), the developer of RM2C who made this possible.
+
+Thanks to [EmeraldLockdown](https://github.com/EmeraldLoc) for all the help provided when I first got into Romhack porting.
+
+Thanks to [Sunk](https://www.youtube.com/channel/UCBT9x3fRcOqbDTATXVgptWg) for the creation of his Romhack port tutorial.
+
+Thanks to [Leonitz](https://www.youtube.com/c/Leonitz) for the program icon.
+
+Thanks to Woissil for the testing.
