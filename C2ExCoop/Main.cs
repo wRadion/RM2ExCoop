@@ -6,20 +6,20 @@ namespace RM2ExCoop.C2ExCoop
 {
     internal class Main
     {
-        public static void Run(MainWindow window, string modName, string modDesc, bool commentSOM, bool removeFlags, bool removePaintings, bool removeTrajectories, bool tryFixFog, bool dontUseCameraSpecific, string entryLevel)
+        public static void Run(string modName, string modDesc, bool commentSOM, bool removeFlags, bool removePaintings, bool removeTrajectories, bool tryFixFog, bool dontUseCameraSpecific, string entryLevel)
         {
             string rootDir = Directory.GetCurrentDirectory();
             string modDir = Path.Join(rootDir, "mod");
 
             if (Directory.Exists(modDir))
             {
-                window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Deleting old mod directory")));
+                Logger.Info("Deleting old mod directory");
                 Directory.Delete(modDir, true);
             }
 
             {
                 string outputDir = Path.Join(rootDir, "output");
-                window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Copying all C files into new mod directory")));
+                Logger.Info("Copying all C files into new mod directory");
                 RM2C.Utils.CopyDirectory(outputDir, modDir);
             }
 
@@ -36,11 +36,11 @@ namespace RM2ExCoop.C2ExCoop
                 ("textureNew.inc.c", "texture.inc.c")
             };
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Processing all level files")));
+            Logger.Info("Processing all level files");
 
             foreach (DirectoryInfo lvl in levelsDir.GetDirectories())
             {
-                window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Processing level " + lvl.Name)));
+                Logger.Info("Processing level " + lvl.Name);
 
                 FileInfo[] files = lvl.GetFiles();
 
@@ -73,7 +73,7 @@ namespace RM2ExCoop.C2ExCoop
 
                     foreach (var area in dirs.GetDirectories())
                     {
-                    window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Processing area " + area.Name + " of " + lvl.Name)));
+                        Logger.Info("Processing area " + area.Name + " of " + lvl.Name);
 
                         int movtexFiles = 0;
 
@@ -118,15 +118,15 @@ namespace RM2ExCoop.C2ExCoop
                 }
             }
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Deleting useless level files")));
+            Logger.Info("Deleting useless level files");
             foreach (string file in toDelete)
                 File.Delete(file);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Renaming some level files")));
+            Logger.Info("Renaming some level files");
             foreach (var (src, dest) in toRename)
                 File.Move(src, dest);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Renaming and moving .m64 sequences files")));
+            Logger.Info("Renaming and moving .m64 sequences files");
             string soundDir = Path.Join(modDir, "sound");
             DirectoryInfo seqDir = new(Path.Join(soundDir, "sequences", "us"));
             foreach (var file in seqDir.GetFiles())
@@ -134,34 +134,41 @@ namespace RM2ExCoop.C2ExCoop
                 string newFileName = Regex.Replace(file.Name, "Seq_.*_custom", "Seq_custom");
                 file.MoveTo(Path.Join(soundDir, newFileName));
             }
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Deleting sequences folder")));
+            Logger.Info("Deleting sequences folder");
             Directory.Delete(Path.Join(soundDir, "sequences"), true);
 
             string srcPath = Path.Join(modDir, "src");
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Generating main.lua file")));
+            Logger.Info("Generating main.lua file");
             string seqPath = Path.Join(soundDir, "sequences.json");
             string starPosPath = Path.Join(srcPath, "game", "Star_Pos.inc.c");
             new MainLuaGenerator(modName, modDesc, seqPath, starPosPath, movTexs, dontUseCameraSpecific, entryLevel).Generate(modDir);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Generating dialogs.lua and courses.lua files")));
-            string dialogsPath = Path.Join(modDir, "text", "us", "dialogs.h");
-            string coursesPath = Path.Join(modDir, "text", "us", "courses.h");
+            string textPath = Path.Join(modDir, "text");
+            Logger.Info("Generating dialogs.lua and courses.lua files");
+            string dialogsPath = Path.Join(textPath, "us", "dialogs.h");
+            string coursesPath = Path.Join(textPath, "us", "courses.h");
             new TextLuasGenerator(dialogsPath, coursesPath).Generate(modDir);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Generating tweaks.lua file")));
+            Logger.Info("Generating tweaks.lua file");
             string tweaksPath = Path.Join(srcPath, "game", "tweaks.inc.c");
-            new TweaksLuaGenerator(tweaksPath).Generate(modDir);
+            if (!File.Exists(tweaksPath))
+                Logger.Warn("There were no tweaks.inc.c file generated. Skipping it.");
+            else
+                new TweaksLuaGenerator(tweaksPath).Generate(modDir);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Generating moving_textures.lua file")));
+            Logger.Info("Generating moving_textures.lua file");
             string movingTexturePath = Path.Join(srcPath, "game", "moving_texture.inc.c");
             string scrollTargetsPath = Path.Join(srcPath, "game", "ScrollTargets.inc.c");
             new MovingTexturesLuaGenerator(movingTexturePath, scrollTargetsPath).Generate(modDir);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("Deleting src folder")));
+            Logger.Info("Deleting src folder");
             Directory.Delete(srcPath, true);
 
-            window.Dispatcher.BeginInvoke(() => window.Dispatcher.BeginInvoke(() => window.Log("C2ExCoop done.")));
+            Logger.Info("Deleting text folder");
+            Directory.Delete(textPath, true);
+
+            Logger.Info("C2ExCoop done.");
         }
     }
 }

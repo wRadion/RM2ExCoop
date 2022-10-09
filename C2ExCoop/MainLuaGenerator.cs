@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace RM2ExCoop.C2ExCoop
 {
@@ -43,27 +44,41 @@ namespace RM2ExCoop.C2ExCoop
             }
 
             writer.WriteLine();
-            foreach (string line in File.ReadAllLines(_seqPath))
+            if (!File.Exists(_seqPath))
             {
-                if (!line.Contains("_custom")) continue;
+                Logger.Warn("There were no sequences.json file generated. Skipping it.");
+            }
+            else
+            {
+                foreach (string line in File.ReadAllLines(_seqPath))
+                {
+                    if (!line.Contains("_custom")) continue;
 
-                string seqId = line.Split('"')[1].Split('_')[0];
+                    string seqId = line.Split('"')[1].Split('_')[0];
 
-                if (seqId == "00")
-                    continue;
+                    if (seqId == "00")
+                        continue;
 
-                string soundBankId = line.Split("[\"")[1].Split("\"]")[0].Split('_')[0];
+                    string soundBankId = line.Split("[\"")[1].Split("\"]")[0].Split('_')[0];
 
-                writer.WriteLine($"smlua_audio_utils_replace_sequence(0x{seqId}, 0x{soundBankId}, 75, \"{seqId}_Seq_custom\")");
+                    writer.WriteLine($"smlua_audio_utils_replace_sequence(0x{seqId}, 0x{soundBankId}, 75, \"{seqId}_Seq_custom\")");
+                }
             }
 
             writer.WriteLine();
-            foreach (string line in File.ReadAllLines(_starPosPath))
+            if (!File.Exists(_starPosPath))
             {
-                string star = line.Split(' ')[1].Replace("BoB", "Bob").Replace("THI", "Thi").Replace("Omb", "omb");
-                string pos = line.Split("Pos ")[1].Replace("f", "").Replace("{ ", "").Replace(" }", "");
+                Logger.Warn("There were no Star_Pos.inc.c file generated. Skipping it.");
+            }
+            else
+            {
+                foreach (string line in File.ReadAllLines(_starPosPath))
+                {
+                    string star = line.Split(' ')[1].Replace("BoB", "Bob").Replace("THI", "Thi").Replace("Omb", "omb");
+                    string pos = line.Split("Pos ")[1].Replace("f", "").Replace("{ ", "").Replace(" }", "");
 
-                writer.WriteLine($"vec3f_set(gLevelValues.starPositions.{star}, {pos})");
+                    writer.WriteLine($"vec3f_set(gLevelValues.starPositions.{star}, {pos})");
+                }
             }
         }
     }

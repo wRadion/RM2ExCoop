@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace RM2ExCoop.C2ExCoop
 {
@@ -17,20 +18,34 @@ namespace RM2ExCoop.C2ExCoop
         public void Generate(string outputDir)
         {
             // Dialog.h
-            new FileObject(_dialogsPath).
-                Replace(new Regex("DEFINE_DIALOG"), "smlua_text_utils_dialog_replace").
-                Replace(new Regex("_\\("), "(").
-                Replace(new Regex("\\\\n\\\\"), "\\")
-                .ApplyAndSave(Path.Join(outputDir, "dialogs.lua"));
+            if (!File.Exists(_dialogsPath))
+            {
+                Logger.Warn("There were no dialogs.h file generated. Skipping it.");
+            }
+            else
+            {
+                new FileObject(_dialogsPath).
+                    Replace(new Regex("DEFINE_DIALOG"), "smlua_text_utils_dialog_replace").
+                    Replace(new Regex("_\\("), "(").
+                    Replace(new Regex("\\\\n\\\\"), "\\")
+                    .ApplyAndSave(Path.Join(outputDir, "dialogs.lua"));
+            }
 
             // Courses.h
-            new FileObject(_coursesPath).
-                Replace(new Regex("COURSE_ACTS"), "smlua_text_utils_course_acts_replace").
-                Replace(new Regex("CASTLE_SECRET_STARS"), "smlua_text_utils_castle_secret_stars_replace").
-                Replace(new Regex("SECRET_STAR"), "smlua_text_utils_secret_star_replace").
-                Replace(new Regex("EXTRA_TEXT"), "smlua_text_utils_extra_text_replace").
-                Replace(new Regex("_\\("), "(")
-                .ApplyAndSave(Path.Join(outputDir, "courses.lua"));
+            if (!File.Exists(_coursesPath))
+            {
+                Logger.Warn("There were no courses.h file generated. Skipping it.");
+            }
+            else
+            {
+                new FileObject(_coursesPath).
+                    Replace(new Regex("COURSE_ACTS"), "smlua_text_utils_course_acts_replace").
+                    Replace(new Regex("CASTLE_SECRET_STARS"), "smlua_text_utils_castle_secret_stars_replace").
+                    Replace(new Regex("SECRET_STAR"), "smlua_text_utils_secret_star_replace").
+                    Replace(new Regex("EXTRA_TEXT"), "smlua_text_utils_extra_text_replace").
+                    Replace(new Regex("_\\("), "(")
+                    .ApplyAndSave(Path.Join(outputDir, "courses.lua"));
+            }
         }
     }
 }

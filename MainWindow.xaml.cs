@@ -126,7 +126,7 @@ namespace RM2ExCoop
             {
                 try
                 {
-                    C2ExCoop.Main.Run(this, modName, modDesc, commentSOM, removeFlags, removePaintings, removeTrajectories, tryFixFog, dontUseCameraSpecific, entryLevel);
+                    C2ExCoop.Main.Run(modName, modDesc, commentSOM, removeFlags, removePaintings, removeTrajectories, tryFixFog, dontUseCameraSpecific, entryLevel);
                     MessageBox.Show("C2ExCoop done!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception e)
