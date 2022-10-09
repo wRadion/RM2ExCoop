@@ -27,15 +27,6 @@ The program works best with Romhack **entirely** made with ROM Manager or SM64 E
 
 This program work even better if the Romhack doesn't use custom asm code or custom objects behaviors.
 
-## TODO
-
-- [ ] **Add proper logging/status/feedback** (most important right now)
-- [ ] Handle Skyboxes automatically
-- [ ] Handle Actors automatically
-- [ ] Fully generate scroll targets Lua code
-- [ ] Add option for WaterBoxes type
-- [ ] Generate behavior table
-
 ## What does it do?
 
 This program uses [rom-manager-2-c](https://gitlab.com/scuttlebugraiser/rom-manger-2-c/) (well, a new version recoded entirely in C# for this case).
