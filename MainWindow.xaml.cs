@@ -2,12 +2,6 @@
 using RM2ExCoop.RM2C;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.Intrinsics.X86;
-using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,7 +59,7 @@ namespace RM2ExCoop
                 Objects = new ObjectsOption((ExportObjectsCheck.IsChecked ?? false) ? ObjectsOptionType.ALL : ObjectsOptionType.NONE),
                 Text = true,
                 Misc = true,
-                Segment2 = true,
+                Segment2 = ExportSegment2Check.IsChecked ?? false,
                 Skyboxes = ExportSkyboxesCheck.IsChecked ?? false,
                 Editor = EditorCheck.IsChecked ?? false
             };
@@ -98,9 +92,9 @@ namespace RM2ExCoop
         {
             Color c = type switch
             {
-                LogType.WARN => Colors.LightGoldenrodYellow,
+                LogType.WARN => Colors.DarkGoldenrod,
                 LogType.ERROR => Colors.Red,
-                LogType.DEBUG => Colors.AliceBlue,
+                LogType.DEBUG => Colors.CornflowerBlue,
                 _ => Colors.Black
             };
 
@@ -130,8 +124,16 @@ namespace RM2ExCoop
             DisableButtons();
             Task.Run(() =>
             {
-                C2ExCoop.Main.Run(modName, modDesc, commentSOM, removeFlags, removePaintings, removeTrajectories, tryFixFog, dontUseCameraSpecific, entryLevel);
-                MessageBox.Show("C2ExCoop done!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                {
+                    C2ExCoop.Main.Run(this, modName, modDesc, commentSOM, removeFlags, removePaintings, removeTrajectories, tryFixFog, dontUseCameraSpecific, entryLevel);
+                    MessageBox.Show("C2ExCoop done!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception e)
+                {
+                    Dispatcher.BeginInvoke(() => Log(e.GetType().Name + ":\n\t" + e.Message + "\n\n" + e.StackTrace, LogType.ERROR));
+                    MessageBox.Show("There was an error that ended C2ExCoop sooner that expected. Generated Lua files may be incomplete.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 Dispatcher.BeginInvoke(EnableButtons);
             });
         }
@@ -252,6 +254,8 @@ namespace RM2ExCoop
 
             CheckAllLevels(true);
             EnableAllLevels(false);
+            CheckAllLevelsBtn.IsEnabled = false;
+            UncheckAllLevelsBtn.IsEnabled = false;
         }
 
         private void AllLevelsCheck_Unchecked(object sender, RoutedEventArgs e)
@@ -259,6 +263,8 @@ namespace RM2ExCoop
             if (!IsInitialized) return;
 
             EnableAllLevels(true);
+            CheckAllLevelsBtn.IsEnabled = true;
+            UncheckAllLevelsBtn.IsEnabled = true;
         }
     }
 }

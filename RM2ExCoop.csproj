@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="icon.png" />
+    <None Remove="Icon_de_C2ExCoop.png" />
     <None Remove="RM2C\sm64.us.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +41,10 @@
   <ItemGroup>
     <PackageReference Include="geometry3Sharp" Version="1.0.324" />
     <PackageReference Include="Magick.NET-Q8-x64" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -37,17 +37,20 @@ namespace RM2ExCoop.C2ExCoop
 
             writer.WriteLine();
             writer.WriteLine("-- Scroll Textures");
-            writer.WriteLine("--   Uncomment and replace <id> and <count> with the proper values");
+            writer.WriteLine("--   Uncomment and replace <id>, <offset> and <count> with the proper values");
             writer.WriteLine("--   if you want to have scroll textures in your mod.");
             writer.WriteLine("--[[");
+            HashSet<string> vbs = new();
             foreach (string line in File.ReadAllLines(_scrollTargetsPath))
             {
                 if (!line.Trim().StartsWith("&VB")) continue;
 
                 string vb = line.Split('&')[1].Split('[')[0];
-                string offset = line.Split('[')[1].Split(']')[0];
 
-                writer.WriteLine($"add_scroll_targets(<id>, \"{vb}\", {offset}, <count>)");
+                if (vbs.Contains(vb)) continue;
+                vbs.Add(vb);
+
+                writer.WriteLine($"add_scroll_targets(<id>, \"{vb}\", <offset>, <count>)");
             }
             writer.WriteLine("--]]");
         }

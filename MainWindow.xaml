@@ -8,9 +8,9 @@
         Title="RM2ExCoop 0.1"
         Width="900"
         MinWidth="900"
-        Height="945"
-        MinHeight="945"
-        WindowStartupLocation="CenterScreen">
+        Height="919"
+        MinHeight="919"
+        WindowStartupLocation="CenterScreen" Icon="/icon.png">
     <Border>
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
@@ -46,9 +46,23 @@
                             <RadioButton GroupName="EditorType" Content="ROM Manager" IsChecked="True" />
                             <RadioButton GroupName="EditorType" Grid.Column="1" x:Name="EditorCheck" Content="SM64 Editor" IsChecked="False" />
                         </Grid>
-                        <CheckBox x:Name="ExportActorsCheck" Content="Export Actors" IsChecked="False" Margin="0 0 0 10" />
-                        <CheckBox x:Name="ExportObjectsCheck" Content="Export Objects" IsChecked="False" Margin="0 0 0 10" />
-                        <CheckBox x:Name="ExportSkyboxesCheck" Content="Export Skyboxes" IsChecked="False" Margin="0 0 0 10" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="103" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+
+                            <CheckBox Grid.Row="0" x:Name="ExportActorsCheck" Content="Export Actors" IsChecked="False" />
+                            <CheckBox Grid.Row="1" x:Name="ExportObjectsCheck" Content="Export Objects" IsChecked="False" />
+
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ExportSegment2Check" Content="Export Textures (Segment2)" IsChecked="True" />
+                            <CheckBox Grid.Row="1" Grid.Column="1" x:Name="ExportSkyboxesCheck" Content="Export Skyboxes" IsChecked="False" />
+                        </Grid>
                         <GroupBox Header="Levels" Padding="10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
