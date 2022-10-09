@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
 
 namespace RM2ExCoop
 {
@@ -28,6 +29,7 @@ namespace RM2ExCoop
                 System.Diagnostics.Debug.WriteLine("[INFO]" + GetTimestamp() + " " + text);
             else
                 Instance.WriteInfo(text);
+            Application.Current.Dispatcher.BeginInvoke(() => ((MainWindow)Application.Current.MainWindow).Log("[INFO] " + text));
         }
 
         public static void Warn(string text)
@@ -36,15 +38,16 @@ namespace RM2ExCoop
                 System.Diagnostics.Debug.WriteLine("[WARN]" + GetTimestamp() + " " + text);
             else
                 Instance.WriteWarn(text);
+            Application.Current.Dispatcher.BeginInvoke(() => ((MainWindow)Application.Current.MainWindow).Log("[WARN] " + text, MainWindow.LogType.WARN));
         }
 
         public static void Error(string text)
         {
             if (Debugger.IsAttached)
-
                 System.Diagnostics.Debug.WriteLine("[ERROR]" + GetTimestamp() + " " + text);
             else
                 Instance.WriteError(text);
+            Application.Current.Dispatcher.BeginInvoke(() => ((MainWindow)Application.Current.MainWindow).Log("[ERROR] " + text, MainWindow.LogType.ERROR));
         }
 
         public static void Debug(string text)
@@ -53,6 +56,7 @@ namespace RM2ExCoop
                 System.Diagnostics.Debug.WriteLine(text);
             else
                 Instance.WriteDebug(text);
+            Application.Current.Dispatcher.BeginInvoke(() => ((MainWindow)Application.Current.MainWindow).Log("[DEBUG] " + text, MainWindow.LogType.DEBUG));
         }
 
         static string GetTimestamp() => DateTime.Now.ToString("[ddd, dd MMM yyy HH':'mm':'ss]");

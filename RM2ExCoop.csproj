@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="geometry3Sharp" Version="1.0.324" />
-    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="12.0.1" />
+    <PackageReference Include="Magick.NET-Q8-x64" Version="12.2.0" />
   </ItemGroup>
 
   <ItemGroup>

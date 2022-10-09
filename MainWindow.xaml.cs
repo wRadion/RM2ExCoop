@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace RM2ExCoop
 {
@@ -69,13 +70,48 @@ namespace RM2ExCoop
                 Editor = EditorCheck.IsChecked ?? false
             };
 
+            ClearLogs();
             DisableButtons();
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
-                RM2C.Main.Run(_romPath, options);
-                MessageBox.Show("RM2C done!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                {
+                    RM2C.Main.Run(_romPath, options);
+                    MessageBox.Show("RM2C done!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception e)
+                {
+                    Dispatcher.BeginInvoke(() => Log(e.GetType().Name + ":\n\t" + e.Message + "\n\n" + e.StackTrace, LogType.ERROR));
+                    MessageBox.Show("There was an error that ended RM2C sooner that expected. Generated C files may be incomplete.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 Dispatcher.BeginInvoke(EnableButtons);
             });
+        }
+
+        public void ClearLogs()
+        {
+            LogsBox.Document.Blocks.Clear();
+        }
+
+        public enum LogType { INFO, WARN, ERROR, DEBUG }
+        public void Log(string text, LogType type = LogType.INFO)
+        {
+            Color c = type switch
+            {
+                LogType.WARN => Colors.LightGoldenrodYellow,
+                LogType.ERROR => Colors.Red,
+                LogType.DEBUG => Colors.AliceBlue,
+                _ => Colors.Black
+            };
+
+            Run r = new(text)
+            {
+                Foreground = new SolidColorBrush(c)
+            };
+            Paragraph p = new(r);
+
+            LogsDocument.Blocks.Add(p);
+            LogsBox.ScrollToEnd();
         }
 
         private void C2ExCoopBtn_Click(object sender, RoutedEventArgs e)
@@ -87,12 +123,14 @@ namespace RM2ExCoop
             bool removePaintings = RemovePaintingCheck.IsChecked ?? false;
             bool removeTrajectories = RemoveTrajectoriesCheck.IsChecked ?? false;
             bool tryFixFog = TryFixFogCheck.IsChecked ?? false;
+            bool dontUseCameraSpecific = DontUseCameraSpecificCheck.IsChecked ?? false;
             string entryLevel = (string)((ComboBoxItem)EntryLevelSelect.SelectedValue).Content;
 
+            ClearLogs();
             DisableButtons();
             Task.Run(() =>
             {
-                C2ExCoop.Main.Run(modName, modDesc, commentSOM, removeFlags, removePaintings, removeTrajectories, tryFixFog, entryLevel);
+                C2ExCoop.Main.Run(modName, modDesc, commentSOM, removeFlags, removePaintings, removeTrajectories, tryFixFog, dontUseCameraSpecific, entryLevel);
                 MessageBox.Show("C2ExCoop done!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Dispatcher.BeginInvoke(EnableButtons);
             });

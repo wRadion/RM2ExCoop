@@ -1,4 +1,6 @@
-﻿namespace RM2ExCoop.RM2C
+﻿using System;
+
+namespace RM2ExCoop.RM2C
 {
     /*
      * https://hack64.net/wiki/doku.php?id=super_mario_64:level_commands
@@ -222,7 +224,7 @@
             }
             catch
             {
-                Logger.Error("Unreachable ROM Bank (B2P function error) while loading model");
+                throw new InvalidOperationException("Unreachable ROM Bank (B2P function error) while loading model");
             }
 
             return cmd.Start;

@@ -6,7 +6,7 @@ namespace RM2ExCoop.C2ExCoop
 {
     internal class Main
     {
-        public static void Run(string modName, string modDesc, bool commentSOM, bool removeFlags, bool removePaintings, bool removeTrajectories, bool tryFixFog, string entryLevel)
+        public static void Run(string modName, string modDesc, bool commentSOM, bool removeFlags, bool removePaintings, bool removeTrajectories, bool tryFixFog, bool dontUseCameraSpecific, string entryLevel)
         {
             string rootDir = Directory.GetCurrentDirectory();
             string modDir = Path.Join(rootDir, "mod");
@@ -122,20 +122,24 @@ namespace RM2ExCoop.C2ExCoop
             }
             Directory.Delete(Path.Join(soundDir, "sequences"), true);
 
+            string srcPath = Path.Join(modDir, "src");
+
             string seqPath = Path.Join(soundDir, "sequences.json");
-            string starPosPath = Path.Join(modDir, "src", "game", "Star_Pos.inc.c");
-            new MainLuaGenerator(modName, modDesc, seqPath, starPosPath, movTexs, entryLevel).Generate(modDir);
+            string starPosPath = Path.Join(srcPath, "game", "Star_Pos.inc.c");
+            new MainLuaGenerator(modName, modDesc, seqPath, starPosPath, movTexs, dontUseCameraSpecific, entryLevel).Generate(modDir);
 
             string dialogsPath = Path.Join(modDir, "text", "us", "dialogs.h");
             string coursesPath = Path.Join(modDir, "text", "us", "courses.h");
             new TextLuasGenerator(dialogsPath, coursesPath).Generate(modDir);
 
-            string tweaksPath = Path.Join(modDir, "src", "game", "tweaks.inc.c");
+            string tweaksPath = Path.Join(srcPath, "game", "tweaks.inc.c");
             new TweaksLuaGenerator(tweaksPath).Generate(modDir);
 
-            string movingTexturePath = Path.Join(modDir, "src", "game", "moving_texture.inc.c");
-            string scrollTargetsPath = Path.Join(modDir, "src", "game", "ScrollTargets.inc.c");
+            string movingTexturePath = Path.Join(srcPath, "game", "moving_texture.inc.c");
+            string scrollTargetsPath = Path.Join(srcPath, "game", "ScrollTargets.inc.c");
             new MovingTexturesLuaGenerator(movingTexturePath, scrollTargetsPath).Generate(modDir);
+
+            Directory.Delete(srcPath);
         }
     }
 }

@@ -657,10 +657,7 @@ namespace RM2ExCoop.RM2C
                     }
                     modelData.Add(dl);
                 }
-                catch (F3DDecodeException ex)
-                {
-                    Logger.Error("A DL decode error occured while decoding a " + ex.Source + " command. Skipping it.");
-                }
+                catch (F3DDecodeException) { }
                 if (dl == null) continue;
 
                 script.Verts.AddRange(dl.Verts);

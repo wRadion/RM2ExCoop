@@ -5,150 +5,172 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RM2ExCoop"
         mc:Ignorable="d"
-        Title="RM2ExCoop"
-        SizeToContent="WidthAndHeight"
-        Width="auto"
-        Height="auto"
+        Title="RM2ExCoop 0.1"
+        Width="900"
+        MinWidth="900"
+        Height="945"
+        MinHeight="945"
         WindowStartupLocation="CenterScreen">
     <Border>
-        <StackPanel Width="300" Margin="10">
-            <GroupBox Header="RM2C" Padding="10">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                        <Button x:Name="OpenRomBtn" Click="OpenRomBtn_Click" Content="Open ROM" Height="30" Padding="10 0" />
-                        <TextBlock x:Name="RomPathText" Text="No ROM selected" VerticalAlignment="Center" Margin="10 0 0 0" />
-                    </StackPanel>
-                    <Grid Margin="0 0 0 10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                        <RadioButton GroupName="EditorType" Content="ROM Manager" IsChecked="True" />
-                        <RadioButton GroupName="EditorType" Grid.Column="1" x:Name="EditorCheck" Content="SM64 Editor" IsChecked="False" />
-                    </Grid>
-                    <CheckBox x:Name="ExportActorsCheck" Content="Export Actors" IsChecked="False" Margin="0 0 0 10" />
-                    <CheckBox x:Name="ExportObjectsCheck" Content="Export Objects" IsChecked="False" Margin="0 0 0 10" />
-                    <CheckBox x:Name="ExportSkyboxesCheck" Content="Export Skyboxes" IsChecked="False" Margin="0 0 0 10" />
-                    <GroupBox Header="Levels" Padding="10">
-                        <Grid>
+            <GroupBox Grid.Column="1" Header="Logs" Margin="10 0 0 0" Padding="10">
+                <RichTextBox x:Name="LogsBox" IsReadOnly="True" VerticalScrollBarVisibility="Visible" FontFamily="Consolas">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </RichTextBox.Resources>
+                    <FlowDocument x:Name="LogsDocument">
+                    </FlowDocument>
+                </RichTextBox>
+            </GroupBox>
+
+            <StackPanel Grid.Column="0" Width="300">
+                <GroupBox Header="RM2C" Padding="10">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <Button x:Name="OpenRomBtn" Click="OpenRomBtn_Click" Content="Open ROM" Height="30" Padding="10 0" />
+                            <TextBlock x:Name="RomPathText" Text="No ROM selected" VerticalAlignment="Center" Margin="10 0 0 0" />
+                        </StackPanel>
+                        <Grid Margin="0 0 0 10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <CheckBox x:Name="AllLevelsCheck" Content="All" IsChecked="True" Checked="AllLevelsCheck_Checked" Unchecked="AllLevelsCheck_Unchecked" VerticalAlignment="Center" />
-                            <Button Grid.Column="1" x:Name="CheckAllLevelsBtn" Click="CheckAllLevelsBtn_Click" Width="70" Height="20" Content="Select All" />
-                            <Button Grid.Column="2" x:Name="UncheckAllLevelsBtn" Click="UncheckAllLevelsBtn_Click" Width="70" Height="20" Content="Unselect All" />
-
-                            <CheckBox Grid.Row="1" Grid.Column="0" x:Name="BobCheck" IsEnabled="False" Content="BOB" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="1" Grid.Column="1" x:Name="WfCheck" IsEnabled="False" Content="WF" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="1" Grid.Column="2" x:Name="JrbCheck" IsEnabled="False" Content="JRB" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="2" Grid.Column="0" x:Name="CcmCheck" IsEnabled="False" Content="CCM" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="2" Grid.Column="1" x:Name="BbhCheck" IsEnabled="False" Content="BBH" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="2" Grid.Column="2" x:Name="HmcCheck" IsEnabled="False" Content="HMC" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="3" Grid.Column="0" x:Name="LllCheck" IsEnabled="False" Content="LLL" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="3" Grid.Column="1" x:Name="SslCheck" IsEnabled="False" Content="SSL" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="3" Grid.Column="2" x:Name="DddCheck" IsEnabled="False" Content="DDD" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="4" Grid.Column="0" x:Name="SlCheck" IsEnabled="False" Content="SL" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="4" Grid.Column="1" x:Name="WdwCheck" IsEnabled="False" Content="WDW" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="4" Grid.Column="2" x:Name="TtmCheck" IsEnabled="False" Content="TTM" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="5" Grid.Column="0" x:Name="ThiCheck" IsEnabled="False" Content="THI" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="5" Grid.Column="1" x:Name="TtcCheck" IsEnabled="False" Content="TTC" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="5" Grid.Column="2" x:Name="RrCheck" IsEnabled="False" Content="RR" IsChecked="True" VerticalAlignment="Center" />
-
-                            <CheckBox Grid.Row="7" Grid.Column="0" x:Name="CastGroundsCheck" IsEnabled="False" Content="C. Grounds" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="7" Grid.Column="1" x:Name="CastInsideCheck" IsEnabled="False" Content="C. Inside" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="7" Grid.Column="2" x:Name="CastCourtyardCheck" IsEnabled="False" Content="Courtyard" IsChecked="True" VerticalAlignment="Center" />
-
-                            <CheckBox Grid.Row="10" Grid.Column="0" x:Name="TotwcCheck" IsEnabled="False" Content="TotWC" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="10" Grid.Column="1" x:Name="VcutmCheck" IsEnabled="False" Content="VCutM" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="10" Grid.Column="2" x:Name="CotmcCheck" IsEnabled="False" Content="CotMC" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="11" Grid.Column="0" x:Name="PssCheck" IsEnabled="False" Content="PSS" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="11" Grid.Column="1" x:Name="TsaCheck" IsEnabled="False" Content="TSA" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="11" Grid.Column="2" x:Name="WmotrCheck" IsEnabled="False" Content="WMotR" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="12" Grid.Column="0" x:Name="BitdwCheck" IsEnabled="False" Content="BitDW" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="12" Grid.Column="1" x:Name="BitfsCheck" IsEnabled="False" Content="BitFS" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="12" Grid.Column="2" x:Name="BitsCheck" IsEnabled="False" Content="BitS" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="13" Grid.Column="0" x:Name="Bow1Check" IsEnabled="False" Content="Bowser 1" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="13" Grid.Column="1" x:Name="Bow2Check" IsEnabled="False" Content="Bowser 2" IsChecked="True" VerticalAlignment="Center" />
-                            <CheckBox Grid.Row="13" Grid.Column="2" x:Name="Bow3Check" IsEnabled="False" Content="Bowser 3" IsChecked="True" VerticalAlignment="Center" />
+                            <RadioButton GroupName="EditorType" Content="ROM Manager" IsChecked="True" />
+                            <RadioButton GroupName="EditorType" Grid.Column="1" x:Name="EditorCheck" Content="SM64 Editor" IsChecked="False" />
                         </Grid>
-                    </GroupBox>
-                    <Button x:Name="RM2CBtn" Content="Run RM2C" IsEnabled="False" Click="RM2CBtn_Click" Height="50" Margin="0 10 0 0" />
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="C2ExCoop" Margin="0 10 0 0" Padding="10">
-                <StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Mod name:" Margin="0 0 0 5" />
-                        <TextBox x:Name="ModNameInput" Margin="0 5" Padding="5" />
+                        <CheckBox x:Name="ExportActorsCheck" Content="Export Actors" IsChecked="False" Margin="0 0 0 10" />
+                        <CheckBox x:Name="ExportObjectsCheck" Content="Export Objects" IsChecked="False" Margin="0 0 0 10" />
+                        <CheckBox x:Name="ExportSkyboxesCheck" Content="Export Skyboxes" IsChecked="False" Margin="0 0 0 10" />
+                        <GroupBox Header="Levels" Padding="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <CheckBox x:Name="AllLevelsCheck" Content="All" IsChecked="True" Checked="AllLevelsCheck_Checked" Unchecked="AllLevelsCheck_Unchecked" VerticalAlignment="Center" />
+                                <Button Grid.Column="1" x:Name="CheckAllLevelsBtn" Click="CheckAllLevelsBtn_Click" Width="70" Height="20" Content="Select All" />
+                                <Button Grid.Column="2" x:Name="UncheckAllLevelsBtn" Click="UncheckAllLevelsBtn_Click" Width="70" Height="20" Content="Unselect All" />
+
+                                <CheckBox Grid.Row="1" Grid.Column="0" x:Name="BobCheck" IsEnabled="False" Content="BOB" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="1" Grid.Column="1" x:Name="WfCheck" IsEnabled="False" Content="WF" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="1" Grid.Column="2" x:Name="JrbCheck" IsEnabled="False" Content="JRB" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="2" Grid.Column="0" x:Name="CcmCheck" IsEnabled="False" Content="CCM" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="2" Grid.Column="1" x:Name="BbhCheck" IsEnabled="False" Content="BBH" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="2" Grid.Column="2" x:Name="HmcCheck" IsEnabled="False" Content="HMC" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="3" Grid.Column="0" x:Name="LllCheck" IsEnabled="False" Content="LLL" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="3" Grid.Column="1" x:Name="SslCheck" IsEnabled="False" Content="SSL" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="3" Grid.Column="2" x:Name="DddCheck" IsEnabled="False" Content="DDD" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="4" Grid.Column="0" x:Name="SlCheck" IsEnabled="False" Content="SL" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="4" Grid.Column="1" x:Name="WdwCheck" IsEnabled="False" Content="WDW" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="4" Grid.Column="2" x:Name="TtmCheck" IsEnabled="False" Content="TTM" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="5" Grid.Column="0" x:Name="ThiCheck" IsEnabled="False" Content="THI" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="5" Grid.Column="1" x:Name="TtcCheck" IsEnabled="False" Content="TTC" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="5" Grid.Column="2" x:Name="RrCheck" IsEnabled="False" Content="RR" IsChecked="True" VerticalAlignment="Center" />
+
+                                <CheckBox Grid.Row="7" Grid.Column="0" x:Name="CastGroundsCheck" IsEnabled="False" Content="C. Grounds" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="7" Grid.Column="1" x:Name="CastInsideCheck" IsEnabled="False" Content="C. Inside" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="7" Grid.Column="2" x:Name="CastCourtyardCheck" IsEnabled="False" Content="Courtyard" IsChecked="True" VerticalAlignment="Center" />
+
+                                <CheckBox Grid.Row="10" Grid.Column="0" x:Name="TotwcCheck" IsEnabled="False" Content="TotWC" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="10" Grid.Column="1" x:Name="VcutmCheck" IsEnabled="False" Content="VCutM" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="10" Grid.Column="2" x:Name="CotmcCheck" IsEnabled="False" Content="CotMC" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="11" Grid.Column="0" x:Name="PssCheck" IsEnabled="False" Content="PSS" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="11" Grid.Column="1" x:Name="TsaCheck" IsEnabled="False" Content="TSA" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="11" Grid.Column="2" x:Name="WmotrCheck" IsEnabled="False" Content="WMotR" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="12" Grid.Column="0" x:Name="BitdwCheck" IsEnabled="False" Content="BitDW" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="12" Grid.Column="1" x:Name="BitfsCheck" IsEnabled="False" Content="BitFS" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="12" Grid.Column="2" x:Name="BitsCheck" IsEnabled="False" Content="BitS" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="13" Grid.Column="0" x:Name="Bow1Check" IsEnabled="False" Content="Bowser 1" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="13" Grid.Column="1" x:Name="Bow2Check" IsEnabled="False" Content="Bowser 2" IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="13" Grid.Column="2" x:Name="Bow3Check" IsEnabled="False" Content="Bowser 3" IsChecked="True" VerticalAlignment="Center" />
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="RM2CBtn" Content="Run RM2C" IsEnabled="False" Click="RM2CBtn_Click" Height="50" Margin="0 10 0 0" />
                     </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Mod description:" Margin="0 5" />
-                        <TextBox x:Name="ModDescInput" Margin="0 5" Padding="5" />
+                </GroupBox>
+                <GroupBox Header="C2ExCoop" Margin="0 10 0 0" Padding="10">
+                    <StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Mod name:" Margin="0 0 0 5" />
+                            <TextBox x:Name="ModNameInput" Margin="0 5" Padding="5" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Mod description:" Margin="0 5" />
+                            <TextBox x:Name="ModDescInput" Margin="0 5" Padding="5" />
+                        </StackPanel>
+                        <CheckBox x:Name="CommentSOMCheck" Content="Comment 'gsSPSetOtherMode' lines" IsChecked="True" Margin="0 5" />
+                        <CheckBox x:Name="RemoveFlagsCheck" Content="Remove flags of Castle Grounds" IsChecked="True" Margin="0 5" />
+                        <CheckBox x:Name="RemovePaintingCheck" Content="Remove files that use PaintingData" IsChecked="True" Margin="0 5" />
+                        <CheckBox x:Name="RemoveTrajectoriesCheck" Content="Remove Trajectory files" IsChecked="True" Margin="0 5" />
+                        <CheckBox x:Name="TryFixFogCheck" Content="Try to fix Fog" IsChecked="True" Margin="0 5" />
+                        <CheckBox x:Name="DontUseCameraSpecificCheck" Content="Don't use course-specific camera" IsChecked="True" Margin="0 5" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Entry level:" VerticalAlignment="Center" Margin="0 0 10 0" />
+                            <ComboBox x:Name="EntryLevelSelect">
+                                <ComboBoxItem Content="BBH" />
+                                <ComboBoxItem Content="CCM" />
+                                <ComboBoxItem Content="CASTLE" />
+                                <ComboBoxItem Content="HMC" />
+                                <ComboBoxItem Content="SSL" />
+                                <ComboBoxItem Content="BOB" />
+                                <ComboBoxItem Content="SL" />
+                                <ComboBoxItem Content="WDW" />
+                                <ComboBoxItem Content="JRB" />
+                                <ComboBoxItem Content="THI" />
+                                <ComboBoxItem Content="TTC" />
+                                <ComboBoxItem Content="RR" />
+                                <ComboBoxItem Content="CASTLE_GROUNDS" Selector.IsSelected="True" />
+                                <ComboBoxItem Content="BITDW" />
+                                <ComboBoxItem Content="VCUTM" />
+                                <ComboBoxItem Content="BITFS" />
+                                <ComboBoxItem Content="SA" />
+                                <ComboBoxItem Content="BITS" />
+                                <ComboBoxItem Content="LLL" />
+                                <ComboBoxItem Content="DDD" />
+                                <ComboBoxItem Content="WF" />
+                                <ComboBoxItem Content="ENDING" />
+                                <ComboBoxItem Content="CASTLE_COURTYARD" />
+                                <ComboBoxItem Content="PSS" />
+                                <ComboBoxItem Content="COTMC" />
+                                <ComboBoxItem Content="TOTWC" />
+                                <ComboBoxItem Content="BOWSER_1" />
+                                <ComboBoxItem Content="WMOTR" />
+                                <ComboBoxItem Content="BOWSER_2" />
+                                <ComboBoxItem Content="BOWSER_3" />
+                                <ComboBoxItem Content="TTM" />
+                            </ComboBox>
+                        </StackPanel>
+                        <Button x:Name="C2ExCoopBtn" Content="Run C2ExCoop" Click="C2ExCoopBtn_Click" Height="50" Margin="0 5 0 0" />
                     </StackPanel>
-                    <CheckBox x:Name="CommentSOMCheck" Content="Comment 'gsSPSetOtherMode' lines" IsChecked="True" Margin="0 5" />
-                    <CheckBox x:Name="RemoveFlagsCheck" Content="Remove flags of Castle Grounds" IsChecked="True" Margin="0 5" />
-                    <CheckBox x:Name="RemovePaintingCheck" Content="Remove files that use PaintingData" IsChecked="True" Margin="0 5" />
-                    <CheckBox x:Name="RemoveTrajectoriesCheck" Content="Remove Trajectory files" IsChecked="True" Margin="0 5" />
-                    <CheckBox x:Name="TryFixFogCheck" Content="Try to fix Fog" IsChecked="True" Margin="0 5" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Entry level:" VerticalAlignment="Center" Margin="0 0 10 0" />
-                        <ComboBox x:Name="EntryLevelSelect">
-                            <ComboBoxItem Content="BBH" />
-                            <ComboBoxItem Content="CCM" />
-                            <ComboBoxItem Content="CASTLE" />
-                            <ComboBoxItem Content="HMC" />
-                            <ComboBoxItem Content="SSL" />
-                            <ComboBoxItem Content="BOB" />
-                            <ComboBoxItem Content="SL" />
-                            <ComboBoxItem Content="WDW" />
-                            <ComboBoxItem Content="JRB" />
-                            <ComboBoxItem Content="THI" />
-                            <ComboBoxItem Content="TTC" />
-                            <ComboBoxItem Content="RR" />
-                            <ComboBoxItem Content="CASTLE_GROUNDS" Selector.IsSelected="True" />
-                            <ComboBoxItem Content="BITDW" />
-                            <ComboBoxItem Content="VCUTM" />
-                            <ComboBoxItem Content="BITFS" />
-                            <ComboBoxItem Content="SA" />
-                            <ComboBoxItem Content="BITS" />
-                            <ComboBoxItem Content="LLL" />
-                            <ComboBoxItem Content="DDD" />
-                            <ComboBoxItem Content="WF" />
-                            <ComboBoxItem Content="CASTLE_COURTYARD" />
-                            <ComboBoxItem Content="PSS" />
-                            <ComboBoxItem Content="COTMC" />
-                            <ComboBoxItem Content="TOTWC" />
-                            <ComboBoxItem Content="BOWSER_1" />
-                            <ComboBoxItem Content="WMOTR" />
-                            <ComboBoxItem Content="BOWSER_2" />
-                            <ComboBoxItem Content="BOWSER_3" />
-                            <ComboBoxItem Content="TTM" />
-                        </ComboBox>
-                    </StackPanel>
-                    <Button x:Name="C2ExCoopBtn" Content="Run C2ExCoop" Click="C2ExCoopBtn_Click" Height="50" Margin="0 5 0 0" />
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </Grid>
     </Border>
 </Window>

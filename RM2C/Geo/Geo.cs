@@ -66,15 +66,7 @@ namespace RM2ExCoop.RM2C
                     else if (type == "PUSH")
                     {
                         G[t].Item1.Add(geoMacro);
-                        try
-                        {
-                            b = script.B2P(b);
-                        }
-                        catch
-                        {
-                            Logger.Error("Unreachable ROM Bank (B2P Error) while parsing model");
-                            return false;
-                        }
+                        b = script.B2P(b);
                         starts[^1] += x + F[1];
                         starts.Add(b);
                         G.Add((new List<string>(), TransformPushArg(b)));

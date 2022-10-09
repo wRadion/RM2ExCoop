@@ -219,15 +219,7 @@ namespace RM2ExCoop.RM2C
 
                 if (types.TryGetValue(type, out string? typeStr))
                 {
-                    try
-                    {
-                        CurrTextPtr.RawPtr = script.B2P(ptr);
-                    }
-                    catch
-                    {
-                        Logger.Error("Unreachable ROM Bank (B2P Error) while create texture pointer");
-                        CurrTextPtr.RawPtr = ptr;
-                    }
+                    CurrTextPtr.RawPtr = script.B2P(ptr);
                     CurrTextPtr.BankPtr = ptr;
                     CurrTextPtr.Length = bpp;
                     CurrTextPtr.ImgType = typeStr;

@@ -483,7 +483,7 @@ namespace RM2ExCoop.RM2C
             }
             catch
             {
-                return null;
+                throw new IndexOutOfRangeException("Texture pointer out of ROM range.");
             }
 
             tracker.Add(modelDataIndex);

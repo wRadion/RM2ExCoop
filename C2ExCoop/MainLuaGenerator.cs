@@ -11,15 +11,17 @@ namespace RM2ExCoop.C2ExCoop
         readonly string _seqPath;
         readonly string _starPosPath;
         readonly List<(string, string)> _movTexs;
+        readonly bool _dontUseCameraSpecific;
         readonly string _entryLevel;
 
-        public MainLuaGenerator(string modName, string modDesc, string seqPath, string starPosPath, List<(string, string)> movTexs, string entryLevel)
+        public MainLuaGenerator(string modName, string modDesc, string seqPath, string starPosPath, List<(string, string)> movTexs, bool dontUseCameraSpecific, string entryLevel)
         {
             _modName = modName;
             _modDesc = modDesc;
             _seqPath = seqPath;
             _starPosPath = starPosPath;
             _movTexs = movTexs;
+            _dontUseCameraSpecific = dontUseCameraSpecific;
             _entryLevel = entryLevel;
         }
 
@@ -33,6 +35,12 @@ namespace RM2ExCoop.C2ExCoop
 
             writer.WriteLine();
             writer.WriteLine($"gLevelValues.entryLevel = LEVEL_{_entryLevel}");
+
+            if (_dontUseCameraSpecific)
+            {
+                writer.WriteLine();
+                writer.WriteLine("camera_set_use_course_specific_settings(false)");
+            }
 
             writer.WriteLine();
             foreach (string line in File.ReadAllLines(_seqPath))

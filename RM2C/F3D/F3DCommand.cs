@@ -16,16 +16,7 @@ namespace RM2ExCoop.RM2C
             byte[] argsBin = bytes[1..];
 
             F3DCommand? command = null;
-            try
-            {
-                command = F3D.GetCommand(code, argsBin, idPrefix);
-            }
-            catch
-            {
-                Logger.Error("Unknown F3D Command (id: " + code + ")");
-                return null;
-            }
-
+            command = F3D.GetCommand(code, argsBin, idPrefix);
             command.Setup();
 
             return command;
@@ -57,6 +48,7 @@ namespace RM2ExCoop.RM2C
             }
             catch (EndOfStreamException)
             {
+                Logger.Error("A DL decode error occured while decoding a " + GetType().Name + " command. Skipping it.");
                 throw new F3DDecodeException();
             }
             SetArgs();
