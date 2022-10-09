@@ -2,7 +2,7 @@
 
 A program that "transform" a .z64 SM64 Romhack into a sm64ex-coop mod.
 
-![image](https://user-images.githubusercontent.com/7728178/194779281-b7a4b797-6871-4c0b-968f-8eedb9b7061d.png)
+![image](https://user-images.githubusercontent.com/7728178/194782403-d5f8d60c-8245-4597-9539-94e19ed65d43.png)
 
 ## Requirements
 
