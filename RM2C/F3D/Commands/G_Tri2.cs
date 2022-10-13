@@ -25,6 +25,6 @@ namespace RM2ExCoop.RM2C.F3DCommands
             return tri1.Args.Concat(tri2.Args).ToArray();
         }
 
-        public override string ToString() => $"{Name}({tri1.ArgsToString()},{tri2.ArgsToString()}){Suffix}";
+        public override string ToString() => $"{Name}({tri1.ArgsToString()}, {tri2.ArgsToString()}){Suffix}";
     }
 }

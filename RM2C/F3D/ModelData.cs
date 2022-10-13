@@ -8,7 +8,7 @@ namespace RM2ExCoop.RM2C
 {
     internal class ModelData
     {
-        public readonly List<List<F3DCommand>> DLs;
+        public List<List<F3DCommand>> DLs;
         public readonly List<(uint, uint, uint)> Verts;
         public readonly List<TexturePtr> TexturePtrs;
         public readonly List<(uint, uint)> Ambient;

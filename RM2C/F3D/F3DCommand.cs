@@ -15,15 +15,14 @@ namespace RM2ExCoop.RM2C
             byte code = bytes[0];
             byte[] argsBin = bytes[1..];
 
-            F3DCommand? command = null;
-            command = F3D.GetCommand(code, argsBin, idPrefix);
+            F3DCommand? command = F3D.GetCommand(code, argsBin, idPrefix);
             command.Setup();
 
             return command;
         }
 
         public readonly byte Code;
-        public string Name { get; protected set; }
+        public string Name { get; set; }
         public dynamic[] Args { get; set; }
         public string Suffix;
 

@@ -184,6 +184,151 @@ namespace RM2ExCoop.RM2C
             return string.Join('|', strs);
         }
 
+        public static List<ModelData> OptimizeModelData(List<ModelData> modelData)
+        {
+            static bool StartTri(F3DCommand cmd) => cmd is G_Tri1 || cmd is G_Tri2;
+
+            for (int k = 0; k < modelData.Count; ++k)
+            {
+                ModelData md = modelData[k];
+                var ranges = md.Ranges;
+                var dl = md.DLs[0];
+
+                int start = ranges[0][0];
+                List<List<F3DCommand>> newDl = new() { dl.GetRange(start, (int)ranges[0][2] - start + 1) };
+
+                // End should always start from mat start as its normally not drawing anything
+                // But this could bite me, at worst this could end up missing a vert load or 5 tris
+                start = ranges[^1][0];
+                List<F3DCommand> end = dl.GetRange(start, (int)ranges[^1][2] - start + 1);
+
+                List<List<dynamic>> newRanges = ranges.GetRange(1, ranges.Count - 2).OrderBy(x => (((TexturePtr)x[1]).BankPtr, x[4])).Reverse().ToList();
+
+                for (int j = 0; j < newRanges.Count; ++j)
+                {
+                    var r = newRanges[j];
+                    int x = 1;
+                    bool orphan = false;
+                    bool mat = false;
+
+                    while (true)
+                    {
+                        F3DCommand cmd = dl[r[4] + x];
+                        if (StartTri(cmd) && mat)
+                            orphan = true;
+                        else if ((cmd is G_VTX && mat) || (r[4] + x + 1) == dl.Count)
+                            break;
+                        // gsDP is an RDP cmd or a sync. Either way it signals end of tri draws
+                        else if (cmd.ToString().StartsWith("gsDP"))
+                            mat = true;
+                        ++x;
+                    }
+
+                    // Check for duplicate textures
+                    bool dupe = false;
+
+                    if (j > 0 && newRanges[j - 1][1] == r[1])
+                        dupe = true;
+
+                    // If orphan is true it means there are tris orphaned from a vert load before
+                    // the new mat. This means we have to include those orphaned tris.
+                    // For dupes I check starting from the texture load (r[0]) and advance until a
+                    // tri or vert load
+                    if (dupe)
+                    {
+                        x = r[0];
+
+                        while (true)
+                        {
+                            if (StartTri(dl[x]) || dl[x] is G_VTX)
+                                break;
+                            ++x;
+                        }
+
+                        if (orphan)
+                            newDl[^1].Add(dl[(int)r[4]]);
+                        newDl[^1].AddRange(dl.GetRange(x, (int)r[2] - x + 1));
+                    }
+                    else
+                    {
+                        if (orphan)
+                        {
+                            newDl.Add(new List<F3DCommand>() { dl[r[4]] });
+                            newDl[^1].AddRange(dl.GetRange((int)r[0], (int)r[2] - (int)r[0] + 1));
+                        }
+                        else
+                            newDl.Add(dl.GetRange((int)r[0], (int)r[2] - (int)r[0] + 1));
+                    }
+                }
+
+                // Now NewDL is a list of each material. Inside each material the vertex loads
+                // and draws are shitty due to moving around textures.
+                // I will attempt to organize them to be optimal so no triangle is redrawn
+                List<F3DCommand> optNewMats = new();
+
+                foreach (var mat in newDl)
+                {
+                    Dictionary<F3DCommand, List<F3DCommand>> vertDict = new();
+                    F3DCommand? lastLoad = null;
+
+                    // Inside the mat, make a dictionary of every vertex load, and the subsequent triangles
+                    foreach (var cmd in mat)
+                    {
+                        if (cmd is G_VTX)
+                        {
+                            lastLoad = cmd;
+                            if (!vertDict.ContainsKey(cmd))
+                                vertDict[cmd] = new List<F3DCommand>();
+                        }
+
+                        if (StartTri(cmd))
+                        {
+                            if (lastLoad is not null && !vertDict[lastLoad].Contains(cmd))
+                                vertDict[lastLoad].Add(cmd);
+                        }
+                    }
+
+                    // Now vertDict is optimized to only have the triangles that matter.
+                    // Now remake material with first grabbing all material data, then when
+                    // encountering first tri draw fill in via dictionary instead
+                    int x = 0;
+                    List<F3DCommand> newMat = new();
+
+                    while (true)
+                    {
+                        if (x >= mat.Count)
+                            break;
+                        F3DCommand cmd = mat[x];
+
+                        if (StartTri(cmd))
+                            break;
+                        else if (cmd is G_VTX)
+                        {
+                            ++x;
+                            continue;
+                        }
+                        else
+                            newMat.Add(cmd);
+                        ++x;
+                    }
+
+                    foreach (var (vertLoad, tris) in vertDict)
+                    {
+                        if (tris.Count == 0) continue;
+                        newMat.Add(vertLoad);
+                        newMat.AddRange(tris);
+                    }
+
+                    optNewMats.AddRange(newMat);
+                }
+
+                optNewMats.AddRange(end);
+                modelData[k].DLs = new() { optNewMats };
+            }
+
+            return modelData;
+        }
+
         public static List<string> ModelWrite(Rom rom, List<ModelData> modelData, string dir, string idPrefix, string levelDir, bool optimize)
         {
             List<string> refs = new();
@@ -196,8 +341,8 @@ namespace RM2ExCoop.RM2C
 
             // For editor levels, do not use on actors or RM unless explicitly told flagged
             // depends on all data being in the same display list.
-            //if (optimize)
-                //OptimizeModelData(modelData);
+            if (optimize)
+                modelData = OptimizeModelData(modelData);
 
             List<List<int>> trackers = new() { new(), new(), new(), new() };
             List<(uint, uint, uint)> verts = new();
@@ -281,7 +426,7 @@ namespace RM2ExCoop.RM2C
                     string dir1 = string.Join(", ", diffBin[8..11]);
 
                     modelFile.WriteLine($"{lig} = {{");
-                    modelFile.WriteLine($"{{ {col1}}}, 0, {{ {col2}}}, 0, {{ {dir1}}}, 0");
+                    modelFile.WriteLine($"\t{{ {col1}}}, 0, {{ {col2}}}, 0, {{ {dir1}}}, 0");
                     modelFile.WriteLine("};");
                     modelFile.WriteLine();
                 }
@@ -312,7 +457,7 @@ namespace RM2ExCoop.RM2C
                     string col2 = string.Join(", ", ambBin[4..7]);
 
                     modelFile.WriteLine($"{lig} = {{");
-                    modelFile.WriteLine($"{{{col1}}}, 0, {{{col2}}}, 0");
+                    modelFile.WriteLine($"\t{{{col1}}}, 0, {{{col2}}}, 0");
                     modelFile.WriteLine("};");
                     modelFile.WriteLine();
                 }
@@ -362,9 +507,8 @@ namespace RM2ExCoop.RM2C
                             // This may cause empty loads, but that's better than not compiling
                             if (cmd is G_SetTImg cmdSetTImg)
                             {
-                                if (refs.Any(r => r.Contains(cmdSetTImg.Texture)))
-                                    break;
-                                continue;
+                                if (!refs.Any(r => r.Contains(cmdSetTImg.Texture)))
+                                    continue;
                             }
 
                             // Just always have combiners repeat first cycle
@@ -376,16 +520,18 @@ namespace RM2ExCoop.RM2C
 
                             if (cmd.Name == "gsDPSetRenderMode" || n == dl.Count - 1)
                             {
-                                string line = n == dl.Count - 1 ? ",\n" : string.Empty;
+                                string line = n == dl.Count - 1 ? ",\n" + cmd.ToString() : string.Empty;
 
                                 if (setFogRMA)
                                 {
+                                    cmd.Name = "gsDPSetRenderMode";
                                     cmd.Args = new dynamic[] { "G_RM_AA_ZB_TEX_EDGE", "G_RM_NOOP2" };
                                     cmd.Suffix = line;
                                     setFogRMA = false;
                                 }
                                 else if (setFogRMO)
                                 {
+                                    cmd.Name = "gsDPSetRenderMode";
                                     cmd.Args = new dynamic[] { "G_RM_AA_ZB_OPA_SURF", "G_RM_NOOP2" };
                                     cmd.Suffix = line;
                                     setFogRMO = false;
@@ -407,7 +553,7 @@ namespace RM2ExCoop.RM2C
                             }
                         }
 
-                        modelFile.WriteLine($"{cmd.ToString()},");
+                        modelFile.WriteLine($"\t{cmd.ToString()},");
                     }
 
                     modelFile.WriteLine("};");
@@ -463,7 +609,7 @@ namespace RM2ExCoop.RM2C
                     string uvStr = string.Join(", ", uv.Select(s => s.ToString()));
                     string rgbaStr = string.Join(", ", rgba.Select(b => b.ToString()));
 
-                    modelFile.WriteLine("{{" + $"{{ {vposStr} }}, 0, {{ {uvStr} }}, {{ {rgbaStr}}}" + "}},");
+                    modelFile.WriteLine("\t{{" + $"{{ {vposStr} }}, 0, {{ {uvStr} }}, {{ {rgbaStr}}}" + "}},");
                 }
 
                 modelFile.WriteLine("};");

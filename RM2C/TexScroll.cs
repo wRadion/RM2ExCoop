@@ -43,6 +43,7 @@ namespace RM2ExCoop.RM2C
             // because I see a gap and mistake it for the end of an area or something.
             List<(uint, uint, uint)> verts = script.Verts.OrderBy(v => v.Item1).ToList();
 
+            bool found = false;
             foreach ((uint, uint, uint) vert in verts)
             {
                 if (Addr >= vert.Item1)
@@ -57,13 +58,14 @@ namespace RM2ExCoop.RM2C
                         offset = 0xFF0;
                         Logger.Warn($"Texture Scroll Object in level {script.CurrLevel.Name} area {AreaId} at {Utils.Hex(Addr)} has unrecognized address.");
                     }
+                    found = true;
                     break;
                 }
             }
 
-            if (verts.Count == 0)
+            if (!found)
             {
-                closest = (uint)Addr;
+                closest = Addr;
                 offset = 0xFF0;
                 Logger.Warn($"Texture Scroll Object in level {script.CurrLevel.Name} area {AreaId} at {Utils.Hex(Addr)} has unrecognized address.");
             }
