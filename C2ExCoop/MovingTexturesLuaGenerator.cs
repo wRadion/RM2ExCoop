@@ -64,7 +64,7 @@ namespace RM2ExCoop.C2ExCoop
                     if (vbs.Contains(vb)) continue;
                     vbs.Add(vb);
 
-                    writer.WriteLine($"add_scroll_targets(<id>, \"{vb}\", <offset>, <count>)");
+                    writer.WriteLine($"add_scroll_target(<id>, \"{vb}\", <offset>, <count>)");
                 }
                 writer.WriteLine("--]]");
             }

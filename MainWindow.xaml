@@ -93,8 +93,8 @@
                             </Grid.RowDefinitions>
 
                             <CheckBox x:Name="AllLevelsCheck" Content="All" IsChecked="True" Checked="AllLevelsCheck_Checked" Unchecked="AllLevelsCheck_Unchecked" VerticalAlignment="Center" />
-                            <Button Grid.Column="1" x:Name="CheckAllLevelsBtn" Click="CheckAllLevelsBtn_Click" Width="70" Height="20" Content="Select All" />
-                            <Button Grid.Column="2" x:Name="UncheckAllLevelsBtn" Click="UncheckAllLevelsBtn_Click" Width="70" Height="20" Content="Unselect All" />
+                            <Button Grid.Column="1" x:Name="CheckAllLevelsBtn" IsEnabled="False" Click="CheckAllLevelsBtn_Click" Width="70" Height="20" Content="Select All" />
+                            <Button Grid.Column="2" x:Name="UncheckAllLevelsBtn" IsEnabled="False" Click="UncheckAllLevelsBtn_Click" Width="70" Height="20" Content="Unselect All" />
 
                             <CheckBox Grid.Row="1" Grid.Column="0" x:Name="BobCheck" IsEnabled="False" Content="BOB" IsChecked="True" VerticalAlignment="Center" />
                             <CheckBox Grid.Row="1" Grid.Column="1" x:Name="WfCheck" IsEnabled="False" Content="WF" IsChecked="True" VerticalAlignment="Center" />

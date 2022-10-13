@@ -19,6 +19,13 @@ namespace RM2ExCoop.C2ExCoop
 
             {
                 string outputDir = Path.Join(rootDir, "output");
+
+                if (!Directory.Exists(outputDir))
+                {
+                    Logger.Error("`output' dir not found. Please run RM2C before running C2ExCoop!");
+                    return;
+                }
+
                 Logger.Info("Copying all C files into new mod directory");
                 RM2C.Utils.CopyDirectory(outputDir, modDir);
             }
