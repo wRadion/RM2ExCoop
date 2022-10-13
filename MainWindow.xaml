@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RM2ExCoop"
         mc:Ignorable="d"
-        Title="RM2ExCoop 0.1"
+        Title="RM2ExCoop 0.2"
         Width="640"
         MinWidth="640"
         Height="640"
