@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RM2ExCoop.C2ExCoop
@@ -100,7 +101,10 @@ namespace RM2ExCoop.C2ExCoop
                                         Replace(new Regex("TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0"), "G_CC_MODULATEIDECALA").
                                         Replace(new Regex("SHADE, 0, ENVIRONMENT, 0, 0, 0, 0, 1"), "G_CC_FADE").
                                         Replace(new Regex("TEXEL0, 0, SHADE, 0, 0, 0, 0, 1"), "G_CC_MODULATEI").
-                                        Replace(new Regex("TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0"), "G_CC_MODULATEIFADEA");
+                                        Replace(new Regex("TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0"), "G_CC_MODULATEIFADEA").
+                                        Replace(new Regex("TEXEL0, 0, SHADE, 0, 0, 0, 0, SHADE"), "G_CC_MODULATEI").
+                                        Replace(new Regex("TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT"), "G_CC_MODULATEIFADE").
+                                        Replace(new Regex("0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT"), "G_CC_SHADEFADEA");
                                 }
 
                                 file.ApplyAndSave();
