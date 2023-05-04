@@ -37,8 +37,8 @@ namespace RM2ExCoop
                 LllCheck.IsChecked, DddCheck.IsChecked, WfCheck.IsChecked,
                 true, CastCourtyardCheck.IsChecked, PssCheck.IsChecked,
                 CotmcCheck.IsChecked, TotwcCheck.IsChecked, Bow1Check.IsChecked,
-                WmotrCheck.IsChecked, Bow2Check.IsChecked, Bow3Check.IsChecked,
-                TtmCheck.IsChecked
+                WmotrCheck.IsChecked, null, Bow2Check.IsChecked, Bow3Check.IsChecked,
+                null, TtmCheck.IsChecked
             };
 
             List<int> levels = new();
@@ -52,16 +52,21 @@ namespace RM2ExCoop
                 }
             }
 
+            if (!uint.TryParse(MusicExtendInput.Text, out uint musicExtend))
+                musicExtend = 0;
+
             Options options = new()
             {
                 Levels = new LevelsOption(levels.ToArray()),
                 Actors = new ActorsOption((ExportActorsCheck.IsChecked ?? false) ? ActorsOptionType.ALL : ActorsOptionType.NONE),
                 Objects = new ObjectsOption((ExportObjectsCheck.IsChecked ?? false) ? ObjectsOptionType.ALL : ObjectsOptionType.NONE),
-                Text = true,
-                Misc = true,
+                Text = ExportTextCheck.IsChecked ?? false,
+                Misc = ExportMiscCheck.IsChecked ?? false,
                 Segment2 = ExportSegment2Check.IsChecked ?? false,
                 Skyboxes = ExportSkyboxesCheck.IsChecked ?? false,
-                Editor = EditorCheck.IsChecked ?? false
+                Editor = EditorCheck.IsChecked ?? false,
+                Music = ExportMusicsCheck.IsChecked ?? false,
+                MusicExtend = musicExtend
             };
 
             ClearLogs();

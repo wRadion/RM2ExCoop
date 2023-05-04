@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RM2ExCoop"
         mc:Ignorable="d"
-        Title="RM2ExCoop 0.2"
-        Width="640"
-        MinWidth="640"
-        Height="640"
-        MinHeight="640"
+        Title="RM2ExCoop 0.3"
+        Width="615"
+        MinWidth="615"
+        Height="700"
+        MinHeight="700"
         WindowStartupLocation="CenterScreen" Icon="/icon.png">
     <Border>
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="280" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="457" />
+                <RowDefinition Height="482" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -57,15 +57,26 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="25" />
-                            <RowDefinition Height="25" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
                         </Grid.RowDefinitions>
 
-                        <CheckBox Grid.Row="0" x:Name="ExportActorsCheck" Content="Export Actors" IsChecked="False" />
-                        <CheckBox Grid.Row="1" x:Name="ExportObjectsCheck" Content="Export Objects" IsChecked="False" />
+                        <CheckBox Grid.Row="0" Grid.Column="0" x:Name="ExportTextCheck" Content="Export Text" IsChecked="True" />
+                        <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ExportMiscCheck" Content="Export Misc" IsChecked="True" />
 
-                        <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ExportSegment2Check" Content="Export Textures (Segment2)" IsChecked="True" />
-                        <CheckBox Grid.Row="1" Grid.Column="1" x:Name="ExportSkyboxesCheck" Content="Export Skyboxes" IsChecked="False" />
+                        <CheckBox Grid.Row="1" Grid.Column="0" x:Name="ExportActorsCheck" Content="Export Actors" IsChecked="False" />
+                        <CheckBox Grid.Row="1" Grid.Column="1" x:Name="ExportSegment2Check" Content="Export Textures (Segment2)" IsChecked="True" />
+
+                        <CheckBox Grid.Row="2" Grid.Column="0" x:Name="ExportObjectsCheck" Content="Export Objects" IsChecked="False" />
+                        <CheckBox Grid.Row="2" Grid.Column="1" x:Name="ExportSkyboxesCheck" Content="Export Skyboxes" IsChecked="False" />
+
+                        <CheckBox Grid.Row="3" Grid.Column="0" x:Name="ExportMusicsCheck" Content="Export Musics" IsChecked="True" />
+                        <DockPanel Grid.Row="3" Grid.Column="1">
+                            <TextBlock DockPanel.Dock="Left" Text="Music Extend :" Margin="0 0 10 0" />
+                            <TextBox x:Name="MusicExtendInput" Text="0" />
+                        </DockPanel>
                     </Grid>
                     <GroupBox Header="Levels" Padding="10">
                         <Grid>

@@ -163,7 +163,7 @@ namespace RM2ExCoop.RM2C
             }
 
             // Export Sequences
-            if (!(options.WaterOnly || options.ObjectOnly))
+            if (options.Music && !(options.WaterOnly || options.ObjectOnly))
             {
                 rom.RipNonLevelSeq(m64Files, seqNums, options.MusicExtend);
                 rom.CreateSeqJSON(m64Files, seqNums, options.MusicExtend);
