@@ -39,11 +39,11 @@ namespace RM2ExCoop.C2ExCoop
             else
             {
                 new FileObject(_coursesPath).
+                    Replace(new Regex("_\\("), "(").
                     Replace(new Regex("COURSE_ACTS"), "smlua_text_utils_course_acts_replace").
                     Replace(new Regex("CASTLE_SECRET_STARS"), "smlua_text_utils_castle_secret_stars_replace").
-                    Replace(new Regex("SECRET_STAR"), "smlua_text_utils_secret_star_replace").
-                    Replace(new Regex("EXTRA_TEXT"), "smlua_text_utils_extra_text_replace").
-                    Replace(new Regex("_\\("), "(")
+                    Replace(new Regex("SECRET_STAR\\((\\d+),"), "smlua_text_utils_secret_star_replace($1 + 1,").
+                    Replace(new Regex("EXTRA_TEXT"), "smlua_text_utils_extra_text_replace")
                     .ApplyAndSave(Path.Join(outputDir, "courses.lua"));
             }
         }
